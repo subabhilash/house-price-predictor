@@ -13,5 +13,6 @@ email-validator==2.0.0
 gunicorn==21.2.0
 joblib==1.2.0
 pandas==2.0.3
-numpy==1.24.3
+numpy==1.24.4
 scikit-learn==1.2.2
+
