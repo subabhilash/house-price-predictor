@@ -9,34 +9,38 @@ from models import db, User, Prediction
 from forms import LoginForm, SignupForm, HousePredictionForm
 from ml_model import predictor
 
-def create_app(config_name='development'):
+def create_app(config_name=None):
+    # Use environment variable or default to production
+    if config_name is None:
+        config_name = os.environ.get('FLASK_ENV', 'production')
+
     app = Flask(__name__)
     app.config.from_object(config[config_name])
-    
+
     # Initialize extensions
     db.init_app(app)
-    
+
     # Initialize Flask-Login
     login_manager = LoginManager()
     login_manager.init_app(app)
     login_manager.login_view = 'login'
     login_manager.login_message = 'Please log in to access this page.'
     login_manager.login_message_category = 'info'
-    
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-    
-    # Create tables
+
+    # Create database tables
     with app.app_context():
         db.create_all()
-    
+
     # Routes
     @app.route('/')
     def index():
         """Home page"""
         return render_template('index.html')
-    
+
     @app.route('/login', methods=['GET', 'POST'])
     def login():
         """User login"""
@@ -62,7 +66,7 @@ def create_app(config_name='development'):
                 flash('Invalid username or password.', 'danger')
         
         return render_template('login.html', form=form)
-    
+
     @app.route('/signup', methods=['GET', 'POST'])
     def signup():
         """User registration"""
@@ -97,7 +101,7 @@ def create_app(config_name='development'):
             return redirect(url_for('login'))
         
         return render_template('signup.html', form=form)
-    
+
     @app.route('/logout')
     @login_required
     def logout():
@@ -105,7 +109,7 @@ def create_app(config_name='development'):
         logout_user()
         flash('You have been logged out.', 'info')
         return redirect(url_for('index'))
-    
+
     @app.route('/dashboard')
     @login_required
     def dashboard():
@@ -135,7 +139,7 @@ def create_app(config_name='development'):
         return render_template('dashboard.html', 
                              predictions=recent_predictions, 
                              stats=stats)
-    
+
     @app.route('/predict', methods=['GET', 'POST'])
     @login_required
     def predict():
@@ -163,6 +167,9 @@ def create_app(config_name='development'):
             predicted_price, error = predictor.predict_price(house_features)
             
             if predicted_price is not None:
+                # Convert to Python float if it's numpy type (avoid PostgreSQL error)
+                predicted_price = float(predicted_price)
+                
                 # Save prediction to database
                 prediction = Prediction(
                     user_id=current_user.id,
@@ -183,7 +190,7 @@ def create_app(config_name='development'):
                 flash(f'Prediction failed: {error}', 'danger')
         
         return render_template('predict.html', form=form)
-    
+
     @app.route('/history')
     @login_required
     def history():
@@ -194,38 +201,7 @@ def create_app(config_name='development'):
                                     .paginate(page=page, per_page=20, error_out=False)
         
         return render_template('history.html', predictions=predictions)
-    
-    @app.route('/api/predict', methods=['POST'])
-    @login_required
-    def api_predict():
-        """API endpoint for AJAX predictions"""
-        try:
-            data = request.get_json()
-            
-            # Validate required fields
-            required_fields = ['area', 'bedrooms', 'bathrooms', 'stories', 'parking',
-                             'mainroad', 'guestroom', 'basement', 'hotwaterheating',
-                             'airconditioning', 'prefarea', 'furnishingstatus']
-            
-            for field in required_fields:
-                if field not in data:
-                    return jsonify({'error': f'Missing field: {field}'}), 400
-            
-            # Make prediction
-            predicted_price, error = predictor.predict_price(data)
-            
-            if predicted_price is not None:
-                return jsonify({
-                    'success': True,
-                    'predicted_price': float(predicted_price),
-                    'formatted_price': f'${predicted_price:,.2f}'
-                })
-            else:
-                return jsonify({'success': False, 'error': error}), 500
-                
-        except Exception as e:
-            return jsonify({'success': False, 'error': str(e)}), 500
-    
+
     @app.route('/delete_prediction/<int:prediction_id>')
     @login_required
     def delete_prediction(prediction_id):
@@ -242,11 +218,11 @@ def create_app(config_name='development'):
         flash('Prediction deleted successfully.', 'success')
         
         return redirect(url_for('history'))
-    
+
     return app
 
 # Create app instance
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False)
