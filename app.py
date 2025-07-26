@@ -3,16 +3,23 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from werkzeug.security import check_password_hash
 from datetime import datetime
 import os
+import logging
 
 from config import config
 from models import db, User, Prediction
 from forms import LoginForm, SignupForm, HousePredictionForm
 from ml_model import predictor
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 def create_app(config_name=None):
     # Use environment variable or default to production
     if config_name is None:
         config_name = os.environ.get('FLASK_ENV', 'production')
+    
+    logger.info(f"Starting app with config: {config_name}")
 
     app = Flask(__name__)
     app.config.from_object(config[config_name])
@@ -33,7 +40,11 @@ def create_app(config_name=None):
 
     # Create database tables
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+            logger.info("Database tables created successfully")
+        except Exception as e:
+            logger.error(f"Database initialization error: {e}")
 
     # Routes
     @app.route('/')

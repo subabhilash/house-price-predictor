@@ -1,28 +1,27 @@
-# Core Flask Framework (Compatible versions)
+# Core Flask Framework
 Flask==2.3.3
 Flask-SQLAlchemy==3.0.5
-Flask-Login==0.5.0
-Flask-WTF==1.0.1
-WTForms==2.3.3
+Flask-Login==0.6.3
+Flask-WTF==1.1.1
+WTForms==3.0.1
 
 # Database
 psycopg2-binary==2.9.7
 
-# Environment & Security (Compatible versions)
-python-dotenv==0.21.1
-Werkzeug==2.0.3
-email-validator==1.3.0
-bcrypt==3.2.0
+# Environment & Security
+python-dotenv==1.0.0
+Werkzeug==2.3.7
+email-validator==2.0.0
 
-# Web Server (Stable version)
-gunicorn==20.1.0
+# Web Server
+gunicorn==21.2.0
 
-# Machine Learning Stack (Numpy._core issue fixed)
-joblib==1.2.0
-numpy==1.21.6
-pandas==1.5.3
-scikit-learn==1.1.3
+# Machine Learning Stack
+joblib==1.3.2
+numpy==1.24.3
+pandas==2.0.3
+scikit-learn==1.3.0
 
 # Build Dependencies
-setuptools>=65.5.0
-wheel>=0.37.0
+setuptools>=68.0.0
+wheel>=0.41.0

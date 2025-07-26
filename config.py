@@ -12,20 +12,23 @@ class Config:
     SQLALCHEMY_DATABASE_URI = database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
+    
+    # Render-specific settings
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_recycle': 300,
+        'pool_pre_ping': True,
+        'pool_timeout': 20,
+        'pool_size': 10,
+        'max_overflow': 20
+    }
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_ECHO = True  # Show SQL queries for debugging
+    SQLALCHEMY_ECHO = False  # Disable for cleaner logs
 
 class ProductionConfig(Config):
     DEBUG = False
     SQLALCHEMY_ECHO = False
-    
-    # Production-specific database settings
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        'pool_recycle': 300,
-        'pool_pre_ping': True
-    }
 
 config = {
     'development': DevelopmentConfig,

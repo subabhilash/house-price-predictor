@@ -2,6 +2,9 @@ import os
 import joblib
 import pandas as pd
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 class HousePricePredictor:
     def __init__(self, model_path='models/house_price_model.joblib'):
@@ -13,17 +16,17 @@ class HousePricePredictor:
         self.label_encoders = None
         self.feature_columns = None
         
-        print(f"🔍 Loading your trained model from: {model_path}")
+        logger.info(f"Loading trained model from: {model_path}")
         self.load_model()
     
     def load_model(self):
         """Load your existing trained model"""
         try:
             if not os.path.exists(self.model_path):
-                print(f"❌ Your model file not found: {self.model_path}")
+                logger.warning(f"Model file not found: {self.model_path}")
                 return False
             
-            print(f"📂 Loading your trained model...")
+            logger.info("Loading trained model...")
             self.model_data = joblib.load(self.model_path)
             
             # Handle different model file structures
@@ -36,24 +39,23 @@ class HousePricePredictor:
             else:
                 # If it's just the model object
                 self.model = self.model_data
-                print("⚠️ Model file contains only the model, creating default preprocessing")
+                logger.info("Model file contains only the model, creating default preprocessing")
                 self._create_default_preprocessing()
             
             if self.model is None:
-                print("❌ Could not extract model from file")
+                logger.error("Could not extract model from file")
                 return False
             
             model_name = getattr(self.model, '__class__', type(self.model)).__name__
-            print(f"✅ Your trained model loaded: {model_name}")
+            logger.info(f"Trained model loaded: {model_name}")
             
             if hasattr(self.model, 'feature_names_in_'):
-                print(f"📊 Model expects {len(self.model.feature_names_in_)} features")
+                logger.info(f"Model expects {len(self.model.feature_names_in_)} features")
             
             return True
             
         except Exception as e:
-            print(f"❌ Error loading your model: {e}")
-            print(f"📋 Error details: {type(e).__name__}")
+            logger.error(f"Error loading model: {e}")
             return False
     
     def _create_default_preprocessing(self):
