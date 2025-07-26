@@ -1,54 +1,6 @@
-# Virtual Environment
-venv/
-house_price_env/
-env/
-.venv/
-
-# Python
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-*.so
-.pytest_cache/
-
-# Flask
-instance/
-.webassets-cache
-
-# Database
-*.db
-*.sqlite3
-
-# Environment variables
-.env
-.env.local
-.env.production
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Temporary files
-*.tmp
-*.temp
-
-# ML Models (optional - if large)
-# models/*.joblib
-
-# Node modules (if using any frontend tools)
-node_modules/
-
-# Build files
-build/
-dist/
+echo venv/ > .gitignore
+echo .env >> .gitignore
+echo __pycache__/ >> .gitignore
+echo *.pyc >> .gitignore
+echo *.db >> .gitignore
+echo *.log >> .gitignore
