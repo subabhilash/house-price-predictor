@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}Predict Price - House Price Predictor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-calculator me-2"></i>House Price Prediction
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" id="predictionForm">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Basic Information -->
+                    <div class="form-section">
+                        <h5><i class="fas fa-home me-2"></i>Basic Information</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.area.label(class="form-label") }}
+                                {{ form.area(class="form-control", placeholder="e.g., 2000") }}
+                                {% if form.area.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.area.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.stories.label(class="form-label") }}
+                                {{ form.stories(class="form-control") }}
+                                {% if form.stories.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.stories.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.bedrooms.label(class="form-label") }}
+                                {{ form.bedrooms(class="form-control") }}
+                                {% if form.bedrooms.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.bedrooms.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.bathrooms.label(class="form-label") }}
+                                {{ form.bathrooms(class="form-control") }}
+                                {% if form.bathrooms.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.bathrooms.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.parking.label(class="form-label") }}
+                                {{ form.parking(class="form-control") }}
+                                {% if form.parking.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.parking.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Location & Access -->
+                    <div class="form-section">
+                        <h5><i class="fas fa-map-marker-alt me-2"></i>Location & Access</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.mainroad.label(class="form-label") }}
+                                {{ form.mainroad(class="form-select") }}
+                                {% if form.mainroad.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.mainroad.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.prefarea.label(class="form-label") }}
+                                {{ form.prefarea(class="form-select") }}
+                                {% if form.prefarea.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.prefarea.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- House Features -->
+                    <div class="form-section">
+                        <h5><i class="fas fa-cogs me-2"></i>House Features</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                {{ form.guestroom.label(class="form-label") }}
+                                {{ form.guestroom(class="form-select") }}
+                                {% if form.guestroom.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.guestroom.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.basement.label(class="form-label") }}
+                                {{ form.basement(class="form-select") }}
+                                {% if form.basement.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.basement.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                {{ form.furnishingstatus.label(class="form-label") }}
+                                {{ form.furnishingstatus(class="form-select") }}
+                                {% if form.furnishingstatus.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.furnishingstatus.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.hotwaterheating.label(class="form-label") }}
+                                {{ form.hotwaterheating(class="form-select") }}
+                                {% if form.hotwaterheating.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.hotwaterheating.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.airconditioning.label(class="form-label") }}
+                                {{ form.airconditioning(class="form-select") }}
+                                {% if form.airconditioning.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.airconditioning.errors %}
+                                            <div>{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        {{ form.submit(class="btn btn-primary btn-lg px-5", id="submitBtn") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('predictionForm').addEventListener('submit', function() {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Predicting...';
+    submitBtn.disabled = true;
+});
+</script>
+{% endblock %}

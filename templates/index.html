@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Home - House Price Predictor{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section bg-primary text-white rounded-3 p-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold">House Price Predictor</h1>
+            <p class="lead">Get accurate house price predictions using advanced machine learning algorithms. Make informed real estate decisions with our AI-powered tool.</p>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('predict') }}" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-calculator me-2"></i>Predict Price
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn btn-light btn-lg me-3">
+                    <i class="fas fa-user-plus me-2"></i>Get Started
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            {% endif %}
+        </div>
+        <div class="col-lg-6 text-center">
+            <i class="fas fa-home display-1"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="text-center mb-5">Why Choose Our Predictor?</h2>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">AI-Powered</h5>
+                <p class="card-text">Advanced machine learning algorithms trained on comprehensive real estate data for accurate predictions.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Instant Results</h5>
+                <p class="card-text">Get house price predictions in seconds. No waiting, no complex calculations required.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Track History</h5>
+                <p class="card-text">Keep track of all your predictions and analyze market trends over time.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="text-center mb-5">How It Works</h2>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-circle bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+            <span class="fw-bold">1</span>
+        </div>
+        <h5>Sign Up</h5>
+        <p>Create your free account to get started</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-circle bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+            <span class="fw-bold">2</span>
+        </div>
+        <h5>Enter Details</h5>
+        <p>Provide house specifications and features</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-circle bg-info text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+            <span class="fw-bold">3</span>
+        </div>
+        <h5>Get Prediction</h5>
+        <p>Our AI analyzes and predicts the price</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+        <div class="step-circle bg-warning text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center">
+            <span class="fw-bold">4</span>
+        </div>
+        <h5>Track & Compare</h5>
+        <p>Save results and track your predictions</p>
+    </div>
+</div>
+
+<!-- CTA Section -->
+{% if not current_user.is_authenticated %}
+<div class="row">
+    <div class="col-12">
+        <div class="bg-light rounded-3 p-5 text-center">
+            <h3>Ready to Get Started?</h3>
+            <p class="lead">Join thousands of users who trust our AI for accurate house price predictions.</p>
+            <a href="{{ url_for('signup') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start Predicting Now
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

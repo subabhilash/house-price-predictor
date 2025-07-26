@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Result - House Price Predictor{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Result Card -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-success text-white text-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-check-circle me-2"></i>Prediction Complete!
+                </h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="display-4 text-success fw-bold mb-3">
+                    ${{ "{:,.2f}".format(prediction.predicted_price) }}
+                </div>
+                <p class="lead text-muted">Estimated House Price</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6 mb-3">
+                        <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-calculator me-2"></i>New Prediction
+                        </a>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg w-100">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- House Details -->
+        <div class="card shadow">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-home me-2"></i>House Details
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Basic Information</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Area:</strong> {{ "{:,}".format(prediction.area) }} sq ft</li>
+                            <li><strong>Bedrooms:</strong> {{ prediction.bedrooms }}</li>
+                            <li><strong>Bathrooms:</strong> {{ prediction.bathrooms }}</li>
+                            <li><strong>Stories:</strong> {{ prediction.stories }}</li>
+                            <li><strong>Parking:</strong> {{ prediction.parking }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Features & Amenities</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Main Road:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.mainroad == 'yes' else 'secondary' }}">
+                                    {{ prediction.mainroad.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Guest Room:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.guestroom == 'yes' else 'secondary' }}">
+                                    {{ prediction.guestroom.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Basement:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.basement == 'yes' else 'secondary' }}">
+                                    {{ prediction.basement.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Hot Water Heating:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.hotwaterheating == 'yes' else 'secondary' }}">
+                                    {{ prediction.hotwaterheating.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Air Conditioning:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.airconditioning == 'yes' else 'secondary' }}">
+                                    {{ prediction.airconditioning.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Preferred Area:</strong> 
+                                <span class="badge bg-{{ 'success' if prediction.prefarea == 'yes' else 'secondary' }}">
+                                    {{ prediction.prefarea.title() }}
+                                </span>
+                            </li>
+                            <li><strong>Furnishing:</strong> 
+                                <span class="badge bg-info">{{ prediction.furnishingstatus.title() }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-clock me-1"></i>
+                        Prediction made on {{ prediction.prediction_date.strftime('%B %d, %Y at %I:%M %p') }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
