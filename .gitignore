@@ -1,12 +1,48 @@
-# Remove the current .gitignore and recreate it
+# Remove current .gitignore
 del .gitignore
 
-# Create a new .gitignore with proper content
+# Create new .gitignore with proper content
 @"
+# Virtual Environment
 venv/
-.env
+env/
+.venv/
+.env/
+house_price_env/
+
+# Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Flask
+instance/
+.webassets-cache
+
+# Database files
 *.db
+*.sqlite3
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
 *.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
 "@ | Out-File -FilePath .gitignore -Encoding UTF8
